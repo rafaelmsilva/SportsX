@@ -1,0 +1,96 @@
+﻿@model IEnumerable<SportsX.Domain.Entities.Cliente>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>SportsX</h1>
+
+<p>
+    <div>
+        <a asp-action="Create">Cadastrar cliente pessoa física</a>
+    </div>
+    <div>
+        <a asp-action="CreatePJ">Cadastrar cliente pessoa jurídica</a>
+    </div>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("Documento")
+            </th>
+            <th>
+                @Html.DisplayName("Nome")
+            </th>
+            <th>
+                @Html.DisplayName("Classificação")
+            </th>
+            <th>
+                @Html.DisplayName("E-mail")
+            </th>
+            <th>
+                @Html.DisplayName("Telefones")
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (item.PessoaFisica != null)
+                    {
+                        <span class="documento">
+                            @Html.DisplayFor(modelItem => item.PessoaFisica.Cpf);
+                        </span>
+                    }
+                    @if (item.PessoaJuridica != null)
+                    {
+                        <span class="cnpj">
+                            @Html.DisplayFor(modelItem => item.PessoaJuridica.Cnpj)
+                        </span>
+                    }
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Classificacao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @foreach (var tel in item.Telefones)
+                    {
+
+                        @Html.DisplayFor(modelItem => tel.Numero)
+                        <br />
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Detalhes", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Deletar", "Deletar", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+
+    <script type='text/javascript' src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".documento").inputmask("mask", { "mask": "999.999.999-99" }, { reverse: true });
+            $("#Endereco_Cep").inputmask("mask", { "mask": "99-999-999" });
+            $(".cnpj").inputmask("mask", { "mask": "99.999.999/9999-99" }, { reverse: true });
+
+        });
+    </script>
+}
+
